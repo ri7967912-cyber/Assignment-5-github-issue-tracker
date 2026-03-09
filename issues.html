@@ -19,6 +19,7 @@
 </head>
 <body class="bg-[#F8FAFC] min-h-screen p-4">
   <div class="max-w-7xl mx-auto">
+
     <!-- navbar -->
     <nav class="bg-white rounded-xl shadow-sm border border-[#E4E4E7] p-4 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-2">
@@ -30,7 +31,7 @@
       </div>
     </nav>
 
-    <!-- tabs -->
+    
     <div class="mt-6 flex flex-wrap gap-2 border-b border-[#E4E4E7] pb-2">
       <button data-tab="all" id="tabAll" class="tab-btn px-5 py-2 rounded-t-lg text-sm font-medium text-[#1E293B] hover:bg-[#E4E4E7] transition">All</button>
       <button data-tab="open" id="tabOpen" class="tab-btn px-5 py-2 rounded-t-lg text-sm font-medium text-[#1E293B] hover:bg-[#E4E4E7] transition">Open</button>
@@ -53,7 +54,7 @@
     <!-- loading spinner -->
     <div id="loadingSpinner" class="flex justify-center my-12 hidden"><div class="spinner"></div></div>
 
-    <!-- issues grid (4 columns) -->
+    
     <div id="issuesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6"></div>
 
     <p class="text-center text-[#64748B] text-sm mt-8 border-t pt-4">🔍 click any card for full details</p>
@@ -72,6 +73,10 @@
     </div>
   </div>
 
+
+
+
+  
   <script src="./script/issues.js"></script>
 </body>
 </html>
