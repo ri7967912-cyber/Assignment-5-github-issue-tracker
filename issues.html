@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Issues · Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #4A0FF0; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .modal-overlay { background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
+    .card-top-open { border-top: 4px solid #00A96E; }
+    .card-top-closed { border-top: 4px solid #4A0FF0; }
+    .tab-active { background-color: #E4E4E7; font-weight: 600; }
+    .stat-badge { background: #F8FAFC; color: #1e293b; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] min-h-screen p-4">
+
+  <!-- main container -->
+  <div class="max-w-7xl mx-auto">
+    <!-- navbar -->
+    <nav class="bg-white rounded-xl shadow-sm border border-[#E4E4E7] p-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl font-bold text-[#0A0A0A]">GitHub Issues Tracker</span>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <input type="text" id="searchInput" placeholder="Search issues..." class="flex-1 sm:w-64 px-4 py-2 border border-[#E4E4E7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4A0FF0] text-sm">
+        <button id="searchBtn" class="bg-[#4A0FF0] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#3a0cc0]">Search</button>
+      </div>
+    </nav>
+
+    <!-- tabs -->
+    <div class="mt-6 flex flex-wrap gap-2 border-b border-[#E4E4E7] pb-2">
+      <button data-tab="all" id="tabAll" class="tab-btn px-5 py-2 rounded-t-lg text-sm font-medium text-[#1E293B] hover:bg-[#E4E4E7] transition">All</button>
+      <button data-tab="open" id="tabOpen" class="tab-btn px-5 py-2 rounded-t-lg text-sm font-medium text-[#1E293B] hover:bg-[#E4E4E7] transition">Open</button>
+      <button data-tab="closed" id="tabClosed" class="tab-btn px-5 py-2 rounded-t-lg text-sm font-medium text-[#1E293B] hover:bg-[#E4E4E7] transition">Closed</button>
+    </div>
+
+    <!-- stats row -->
+    <div class="flex flex-wrap items-center justify-between mt-4 bg-white p-3 rounded-lg border border-[#E4E4E7]">
+      <div class="flex items-center gap-3">
+        <span class="text-xl">📋</span>
+        <span id="issueCount" class="font-semibold text-[#0A0A0A]">0 issues</span>
+        <span class="text-[#64748B] text-sm">showing current filter</span>
+      </div>
+      <div class="flex gap-3 text-xs">
+        <span class="stat-badge flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#00A96E]"></span> Open: <span id="openCount">0</span></span>
+        <span class="stat-badge flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#4A0FF0]"></span> Closed: <span id="closedCount">0</span></span>
+      </div>
+    </div>
+
+    <!-- loading spinner -->
+    <div id="loadingSpinner" class="flex justify-center my-12 hidden"><div class="spinner"></div></div>
+
+    <!-- issues grid (4 columns) -->
+    <div id="issuesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6"></div>
+
+    <!-- simple footer -->
+    <p class="text-center text-[#64748B] text-sm mt-8 border-t pt-4">🔍 click any card for full details</p>
+  </div>
+
+  <!-- modal -->
+  <div id="modalOverlay" class="fixed inset-0 modal-overlay hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[#E4E4E7]">
+      <div class="p-6">
+        <div class="flex justify-between items-start">
+          <h2 class="text-xl font-bold text-[#0A0A0A] pr-4" id="modalTitle">Issue title</h2>
+          <button id="closeModalBtn" class="text-[#64748B] hover:text-black text-2xl leading-none">&times;</button>
+        </div>
+        <div class="mt-4 space-y-3 text-sm" id="modalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script/issues.js"></script>
+</body>
+</html>
