@@ -3,7 +3,7 @@
    - `let` is block‑scoped, can be updated but not redeclared in the same scope, and is hoisted but not initialized (Temporal Dead Zone).  
    - `const` is block‑scoped, cannot be updated or redeclared, and must be initialized at declaration. It also creates an immutable binding (but object properties can still be mutated).
 
-2. **What is the spread operator (...)?**  
+<!-- 2 Number answer added -->
    The spread operator expands iterables (like arrays, strings, or objects) into individual elements. It is commonly used to copy arrays/objects, merge them, or pass elements as function arguments.
 
 3. **What is the difference between map(), filter(), and forEach()?**  
