@@ -61,11 +61,9 @@ const MOCK_ISSUES = [
   }
 ];
 
-// ---------- state ----------
 let allIssues = [];
 let currentFilter = 'all';
 
-// DOM elements
 const issuesGrid = document.getElementById('issuesGrid');
 const loadingSpinner = document.getElementById('loadingSpinner');
 const issueCountSpan = document.getElementById('issueCount');
@@ -77,14 +75,11 @@ const modalOverlay = document.getElementById('modalOverlay');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const modalTitle = document.getElementById('modalTitle');
 const modalBody = document.getElementById('modalBody');
-
-// tabs
 const tabAll = document.getElementById('tabAll');
 const tabOpen = document.getElementById('tabOpen');
 const tabClosed = document.getElementById('tabClosed');
 const tabBtns = document.querySelectorAll('.tab-btn');
 
-// ---------- helpers ----------
 function showLoading(show) {
   loadingSpinner.classList.toggle('hidden', !show);
   if (show) issuesGrid.innerHTML = '';
@@ -117,11 +112,8 @@ function setActiveTab(tabId) {
 
 function renderIssues(issuesArray = allIssues) {
   let filtered = issuesArray;
-  if (currentFilter === 'open') {
-    filtered = issuesArray.filter(iss => iss.status === 'open');
-  } else if (currentFilter === 'closed') {
-    filtered = issuesArray.filter(iss => iss.status === 'closed');
-  }
+  if (currentFilter === 'open') filtered = issuesArray.filter(iss => iss.status === 'open');
+  else if (currentFilter === 'closed') filtered = issuesArray.filter(iss => iss.status === 'closed');
 
   if (!filtered.length) {
     issuesGrid.innerHTML = `<div class="col-span-full text-center py-16 text-[#64748B] bg-white rounded-lg border border-dashed">✨ No issues to show</div>`;
@@ -138,11 +130,7 @@ function renderIssues(issuesArray = allIssues) {
     const label = iss.labels?.[0] || 'bug';
     const author = iss.author || iss.user?.login || 'unknown';
 
-    // Colorful badge classes based on status and priority
-    const statusClass = iss.status === 'open' 
-      ? 'bg-green-100 text-green-800' 
-      : 'bg-purple-100 text-purple-800';
-    
+    const statusClass = iss.status === 'open' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800';
     let priorityClass = '';
     const pri = (iss.priority || 'medium').toLowerCase();
     if (pri === 'high') priorityClass = 'bg-red-100 text-red-800';
@@ -167,28 +155,19 @@ function renderIssues(issuesArray = allIssues) {
   updateStats();
 }
 
-// ---------- robust API fetch with fallback ----------
 async function fetchAllIssues() {
   showLoading(true);
   try {
     const res = await fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues');
     if (!res.ok) throw new Error(`HTTP error ${res.status}`);
     const data = await res.json();
-    
     let issuesArray = [];
-    if (Array.isArray(data)) {
-      issuesArray = data;
-    } else if (data.issues && Array.isArray(data.issues)) {
-      issuesArray = data.issues;
-    } else if (data.data && Array.isArray(data.data)) {
-      issuesArray = data.data;
-    } else {
-      console.warn('Unknown API response format, using mock data', data);
-      issuesArray = [];
-    }
+    if (Array.isArray(data)) issuesArray = data;
+    else if (data.issues && Array.isArray(data.issues)) issuesArray = data.issues;
+    else if (data.data && Array.isArray(data.data)) issuesArray = data.data;
+    else issuesArray = [];
 
     if (issuesArray.length === 0) {
-      console.log('API returned no issues, loading mock data');
       allIssues = MOCK_ISSUES;
     } else {
       allIssues = issuesArray.map(iss => ({
@@ -222,18 +201,12 @@ async function performSearch(query) {
     const url = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${encodeURIComponent(query)}`;
     const res = await fetch(url);
     const data = await res.json();
-    
     let results = [];
-    if (Array.isArray(data)) {
-      results = data;
-    } else if (data.issues && Array.isArray(data.issues)) {
-      results = data.issues;
-    } else {
-      results = [];
-    }
+    if (Array.isArray(data)) results = data;
+    else if (data.issues && Array.isArray(data.issues)) results = data.issues;
+    else results = [];
 
     if (results.length === 0) {
-      // Fallback: filter mock data locally
       allIssues = MOCK_ISSUES.filter(iss => 
         iss.title.toLowerCase().includes(query.toLowerCase()) || 
         iss.description.toLowerCase().includes(query.toLowerCase())
@@ -263,7 +236,6 @@ async function performSearch(query) {
   }
 }
 
-// ---------- modal ----------
 function openModal(issueId) {
   const issue = allIssues.find(iss => String(iss.id) === String(issueId));
   if (!issue) return;
@@ -280,23 +252,18 @@ function openModal(issueId) {
   modalOverlay.classList.remove('hidden');
 }
 
-// ---------- event listeners ----------
 tabAll.addEventListener('click', () => { setActiveTab('all'); renderIssues(); });
 tabOpen.addEventListener('click', () => { setActiveTab('open'); renderIssues(); });
 tabClosed.addEventListener('click', () => { setActiveTab('closed'); renderIssues(); });
-
 searchBtn.addEventListener('click', () => performSearch(searchInput.value));
 searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(searchInput.value); });
-
 issuesGrid.addEventListener('click', (e) => {
   const card = e.target.closest('.issue-card');
   if (card) openModal(card.dataset.id);
 });
-
 closeModalBtn.addEventListener('click', () => modalOverlay.classList.add('hidden'));
 modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.classList.add('hidden'); });
 
-// ---------- initialisation & auth guard ----------
 if (localStorage.getItem('issuesTrackerLoggedIn') !== 'true') {
   window.location.href = 'login.html';
 } else {

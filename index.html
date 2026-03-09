@@ -6,9 +6,7 @@
   <title>GitHub Issues · Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
-  <style>
-    * { font-family: 'Inter', sans-serif; }
-  </style>
+  <style>* { font-family: 'Inter', sans-serif; }</style>
 </head>
 <body class="bg-[#F8FAFC] min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-[#E4E4E7]">
@@ -16,7 +14,6 @@
       <h1 class="text-3xl font-bold text-[#0A0A0A] tracking-tight">GitHub Issues Tracker</h1>
       <p class="text-[#64748B] mt-2 text-sm">Sign in to manage your issues</p>
     </div>
-
     <div class="space-y-5">
       <div>
         <label class="block text-sm font-medium text-[#1E293B] mb-1">Username</label>
@@ -27,14 +24,12 @@
         <input type="password" id="password" class="w-full px-4 py-2 border border-[#E4E4E7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4A0FF0] bg-white text-sm" placeholder="••••••••">
         <p class="text-xs text-[#64748B] mt-1">Default: admin123</p>
       </div>
-      <button id="signInBtn" class="w-full bg-[#4A0FF0] hover:bg-[#3a0cc0] text-white font-medium py-2.5 rounded-lg transition duration-150">Sign In</button>
-
+      <button id="signInBtn" class="w-full bg-[#4A0FF0] hover:bg-[#3a0cc0] text-white font-medium py-2.5 rounded-lg transition">Sign In</button>
       <div class="relative flex py-3 items-center">
         <div class="flex-grow border-t border-[#E4E4E7]"></div>
         <span class="flex-shrink mx-3 text-xs text-[#64748B]">OR</span>
         <div class="flex-grow border-t border-[#E4E4E7]"></div>
       </div>
-
       <div class="bg-[#F8FAFC] rounded-lg p-4 text-sm text-[#1E293B] space-y-1 border border-[#E4E4E7]">
         <p class="font-medium">Demo Credentials:</p>
         <p>Username: <span class="font-mono">admin</span></p>
@@ -43,7 +38,6 @@
       </div>
     </div>
   </div>
-
   <script src="./script/login.js"></script>
 </body>
 </html>
